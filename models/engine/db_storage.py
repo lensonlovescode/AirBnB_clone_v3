@@ -32,7 +32,7 @@ class DBStorage:
         HBNB_MYSQL_HOST = getenv('HBNB_MYSQL_HOST')
         HBNB_MYSQL_DB = getenv('HBNB_MYSQL_DB')
         HBNB_ENV = getenv('HBNB_ENV')
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
+        self.__engine = create_engine('mysql+pymysql://{}:{}@{}/{}'.
                                       format(HBNB_MYSQL_USER,
                                              HBNB_MYSQL_PWD,
                                              HBNB_MYSQL_HOST,
@@ -74,3 +74,22 @@ class DBStorage:
     def close(self):
         """call remove() method on the private session attribute"""
         self.__session.remove()
+
+    def get(self, cls, id):
+        """
+        Retrieves one object
+        """
+        obj = self.__session.query(cls).filter_by(id=id).first()
+        return (obj)
+
+    def count(self, cls=None):
+        """
+        Counts the number of objects
+        """
+        if cls is None:
+            length = 0
+            for k, v in classes.items():
+                length += self.__session.query(v).count()
+            return (length)
+        else:
+            return (self.__session.query(cls).count())
