@@ -70,6 +70,10 @@ test_file_storage.py'])
 
 class TestFileStorage(unittest.TestCase):
     """Test the FileStorage class"""
+    def setUp(self):
+        """Reset the objects before each test"""
+        FileStorage._FileStorage__objects = {}
+
     @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_all_returns_dict(self):
         """Test that all returns the FileStorage.__objects attr"""
@@ -113,3 +117,43 @@ class TestFileStorage(unittest.TestCase):
         with open("file.json", "r") as f:
             js = f.read()
         self.assertEqual(json.loads(string), json.loads(js))
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_get(self):
+        """Test the get method of FileStorage"""
+        storage = FileStorage()
+        # Create a new instance of State
+        new_state = State(name="California")
+        storage.new(new_state)
+        storage.save()
+        # Test that get returns the correct object by class and id
+        retrieved_state = storage.get(State, new_state.id)
+        self.assertEqual(retrieved_state, new_state)
+        # Test that get returns None for a non-existent object
+        non_existent = storage.get(State, "non_existent_id")
+        self.assertIsNone(non_existent)
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_count(self):
+        """Test the count method of FileStorage"""
+        storage = FileStorage()
+        # Test count with no class argument (count all objects)
+        total_count = storage.count()
+        print(f"Total count: {total_count}")  # Debug print
+        self.assertIsInstance(total_count, int)
+        # Create a new instance of State
+        new_state = State(name="Florida")
+        storage.new(new_state)
+        storage.save()
+        # Check count again
+        total_count_after_adding = storage.count()
+        print(f"Total count after adding a state: {total_count_after_adding}")
+        self.assertEqual(total_count_after_adding, 1)
+        # Test that count with class argument returns the correct number
+        state_count = storage.count(State)
+        print(f"State count: {state_count}")  # Debug print
+        self.assertEqual(state_count, 1)
+        # Test count with class argument and no objects of that class
+        non_existent_count = storage.count(Amenity)
+        print(f"Amenity count: {non_existent_count}")  # Debug print
+        self.assertEqual(non_existent_count, 0)

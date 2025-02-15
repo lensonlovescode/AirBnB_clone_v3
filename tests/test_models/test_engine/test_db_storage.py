@@ -68,8 +68,8 @@ test_db_storage.py'])
                             "{:s} method needs a docstring".format(func[0]))
 
 
-class TestFileStorage(unittest.TestCase):
-    """Test the FileStorage class"""
+class TestDBStorage(unittest.TestCase):
+    """Test the DBStorage class"""
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_all_returns_dict(self):
         """Test that all returns a dictionaty"""
@@ -86,3 +86,49 @@ class TestFileStorage(unittest.TestCase):
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_save(self):
         """Test that save properly saves objects to file.json"""
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_get(self):
+        """Test the get method of DBStorage"""
+        storage = DBStorage()
+        # Create a new instance of State
+        new_state = State(name="New York")
+        storage.new(new_state)
+        storage.save()
+        # Debug print statements
+        print(f"Created state ID: {new_state.id}")  # Debugging
+        # Test that get returns the correct object by class and id
+        retrieved_state = storage.get(State, new_state.id)
+        if retrieved_state:
+            state_id = retrieved_state.id
+        else:
+            state_id = None
+        print(f"Retrieved state: {state_id}")
+        self.assertEqual(retrieved_state, new_state)
+        # Test that get returns None for a non-existent object
+        non_existent = storage.get(State, "non_existent_id")
+        print(f"Retrieving non-existent state: {non_existent}")
+        self.assertIsNone(non_existent)
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_count(self):
+        """Test the count method of DBStorage"""
+        storage = DBStorage()
+        # Test count with no class argument (count all objects)
+        total_count = storage.count()
+        print(f"Total count before adding a state: {total_count}")
+        self.assertIsInstance(total_count, int)
+        # Create a new instance of State
+        new_state = State(name="Texas")
+        storage.new(new_state)
+        storage.save()
+        # Debug print statements
+        print(f"New state added: {new_state.id} - {new_state.name}")
+        # Test that count with class argument returns the correct number
+        state_count = storage.count(State)
+        print(f"State count after adding a state: {state_count}")
+        self.assertEqual(state_count, 1)
+        # Test count with class argument and no objects of that class
+        non_existent_count = storage.count(Amenity)
+        print(f"Amenity count (should be 0): {non_existent_count}")
+        self.assertEqual(non_existent_count, 0)
