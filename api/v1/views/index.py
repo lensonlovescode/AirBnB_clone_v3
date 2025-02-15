@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """
-To be documented
+Contains app route for /status in the blueprint app_views
+It returns an okay status code for the api
 """
 from api.v1.views import app_views
 

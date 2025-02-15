@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """
-Creates a REST api using flask
+Creates a flask app comprising many flask blueprints
+as part of api building
 """
 from flask import Flask
 from models import storage
