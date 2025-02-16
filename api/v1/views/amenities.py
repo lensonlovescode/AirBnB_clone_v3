@@ -62,7 +62,7 @@ def create_amenity():
     data = request.get_json()
     if not isinstance(data, dict):
         return (jsonify({'error': 'Not a JSON'}))
-    if name not in data:
+    if 'name' not in data.keys():
         return (jsonify({'error': 'Missing name'}))
 
     name = data.get('name')
