@@ -12,8 +12,3 @@ from api.v1.views.index import *
 from api.v1.views.states import *
 from api.v1.views.cities import *
 from api.v1.views.amenities import *
-<<<<<<< HEAD
-from api.v1.views.users import *
-from api.v1.views.places import *
-=======
->>>>>>> 09e993ea0afa6efabf75ed505360815507e8538f
