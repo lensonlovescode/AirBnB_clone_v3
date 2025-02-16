@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """
-Creates API endpoints for acessing deleting and deleting
-Amenity resources
+Creates API endpoints for acessing, creating,  deleting and
+updating Amenity resources, it uses the app_views blueprint
 """
 from api.v1.views import app_views
 from models import storage
@@ -13,7 +13,8 @@ from datetime import datetime
 @app_views.route('/amenities', methods=['GET'])
 def get_amenities():
     """
-    Retrieves all amenity objects
+    Retrieves all amenity objects and returns the JSON
+    representation of the dictionary
     """
     amenities = []
     all_amenities = storage.all(Amenity)
@@ -55,7 +56,8 @@ def delete_amenity(amenity_id):
 @app_views.route('/amenities', methods=['POST'])
 def create_amenity():
     """
-    Creates an amenity
+    Creates an amenity and returns the dictionary representation of the
+    amenity, or an error dictionary
     """
     data = request.get_json()
     if not isinstance(data, dict):
@@ -73,7 +75,8 @@ def create_amenity():
 @app_views.route('/amenities/<amenity_id>', methods=['PUT'])
 def update_amenity(amenity_id):
     """
-    Updates an amenity based on the id
+    Updates an amenity based on the id, returns a code 201
+    on success or an error dictionary
     """
     data = request.get_json()
 
