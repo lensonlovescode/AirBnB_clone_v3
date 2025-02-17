@@ -10,7 +10,8 @@ from flask import jsonify, request
 from datetime import datetime
 
 
-@app_views.route('/amenities', methods=['GET'])
+@app_views.route('/amenities', strict_slashes=False,
+                 methods=['GET'])
 def get_amenities():
     """
     Retrieves all amenity objects and returns the JSON
@@ -24,7 +25,8 @@ def get_amenities():
     return (jsonify(amenities))
 
 
-@app_views.route('/amenities/<amenity_id>', methods=['GET'])
+@app_views.route('/amenities/<amenity_id>', strict_slashes=False,
+                 mmethods=['GET'])
 def get_an_amenity(amenity_id):
     """
     Retrieves a specific amenity based on it's id
@@ -37,7 +39,8 @@ def get_an_amenity(amenity_id):
     abort(404)
 
 
-@app_views.route('/amenities/<amenity_id>', methods=['DELETE'])
+@app_views.route('/amenities/<amenity_id>', strict_slashes=False,
+                 methods=['DELETE'])
 def delete_amenity(amenity_id):
     """
     Deletes an amenity based on it's id
@@ -53,7 +56,7 @@ def delete_amenity(amenity_id):
     return (jsonify({})), 200
 
 
-@app_views.route('/amenities', methods=['POST'])
+@app_views.route('/amenities', strict_slashes=False, mmethods=['POST'])
 def create_amenity():
     """
     Creates an amenity and returns the dictionary representation of the
@@ -72,7 +75,8 @@ def create_amenity():
     return (jsonify(amenity.to_dict())), 201
 
 
-@app_views.route('/amenities/<amenity_id>', methods=['PUT'])
+@app_views.route('/amenities/<amenity_id>', strict_slashes=False,
+                 methods=['PUT'])
 def update_amenity(amenity_id):
     """
     Updates an amenity based on the id, returns a code 201
