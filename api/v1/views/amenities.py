@@ -6,7 +6,7 @@ updating Amenity resources, it uses the app_views blueprint
 from api.v1.views import app_views
 from models import storage
 from models.amenity import Amenity
-from flask import jsonify, request
+from flask import jsonify, request, abort
 
 
 @app_views.route('/amenities', strict_slashes=False,
@@ -25,7 +25,7 @@ def get_amenities():
 
 
 @app_views.route('/amenities/<amenity_id>', strict_slashes=False,
-                 mmethods=['GET'])
+                 methods=['GET'])
 def get_an_amenity(amenity_id):
     """
     Retrieves a specific amenity based on it's id
@@ -55,7 +55,7 @@ def delete_amenity(amenity_id):
     return (jsonify({})), 200
 
 
-@app_views.route('/amenities', strict_slashes=False, mmethods=['POST'])
+@app_views.route('/amenities', strict_slashes=False, methods=['POST'])
 def create_amenity():
     """
     Creates an amenity and returns the dictionary representation of the

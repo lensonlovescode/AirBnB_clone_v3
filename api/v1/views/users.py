@@ -6,7 +6,7 @@ updating Users, it uses the app_views blueprint
 from api.v1.views import app_views
 from models import storage
 from models.user import User
-from flask import jsonify, request
+from flask import jsonify, request, abort
 
 
 @app_views.route('/users', methods=['GET'])
