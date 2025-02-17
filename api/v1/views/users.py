@@ -32,7 +32,7 @@ def get_a_user(user_id):
     user = storage.get(User, user_id)
 
     if user is not None:
-        return (jsonify(user.to_dict()))
+        return (jsonify(user.to_dict())), 200
     abort(404)
 
 
