@@ -59,7 +59,7 @@ def create_user():
     user, or an error dictionary
     """
     data = request.get_json()
-    if not isinstance(data, dict):
+    if not data:
         return (jsonify({'error': 'Not a JSON'}))
     if 'email' not in data.keys():
         return (jsonify({'error': 'Missing email'}))
