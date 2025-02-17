@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 """
 Contains a python script that creates a flask blueprint
-named app_views with the url prefix /api/v1/ as part of a larger
-flask application
+named app_views as part of a larger flask application
 """
 from flask import Blueprint
 
