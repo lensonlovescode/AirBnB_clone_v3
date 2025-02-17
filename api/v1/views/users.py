@@ -93,7 +93,7 @@ def update_user(user_id):
     exclude = ['id', 'created_at', 'updated_at']
     for k, v in data.items():
         if k not in exclude:
-            setattr(k, v, user)
+            setattr(user, k, v)
 
     user.save()
     return (jsonify(user.to_dict())), 200

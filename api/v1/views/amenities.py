@@ -94,7 +94,7 @@ def update_amenity(amenity_id):
     exclude = ['id', 'created_at', 'updated_at']
     for k, v in data.items():
         if k not in exclude:
-            setattr(k, v, amenity)
+            setattr(amenity, k, v,)
 
     amenity.save()
     return (jsonify(amenity.to_dict())), 200
