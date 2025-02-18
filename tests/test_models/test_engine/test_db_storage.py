@@ -132,4 +132,7 @@ class TestDBStorage(unittest.TestCase):
         """
         Tests the count method
         """
-        self.assertIs(type(storage.count(Place)), int, "Get did not return an integer")
+        self.assertIs(
+                type(storage.count(Place)), int,
+                "Get did not return an integer"
+        )
