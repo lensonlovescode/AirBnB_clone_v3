@@ -118,8 +118,14 @@ class TestDBStorage(unittest.TestCase):
         place = Place()
         storage.new(place)
         storage.save()
-        self.assertIs(storage.get(Place, place.id), place, "Get did not return the same object")
-        self.assertIn(type(storage.get(Place, place.id)), classes, "Object returned is not in valid classes")
+        self.assertIs(
+                storage.get(Place, place.id), place,
+                "Get did not return the same object"
+        )
+        self.assertIn(
+                type(storage.get(Place, place.id)), classes,
+                "Object returned is not in valid classes"
+        )
 
     @unittest.skipIf(models.storage_t != 'fs', "not testing db storage")
     def test_count(self):
