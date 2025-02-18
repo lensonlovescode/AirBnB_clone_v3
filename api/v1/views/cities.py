@@ -83,7 +83,7 @@ def update_city(city_id):
     ignored_keys = ["id", "created_at", "updated_at"]
     for key, value in data.items():
         if key not in ignored_keys:
-            setattr(state, key, value)
+            setattr(city, key, value)
 
     city.save()
     return jsonify(city.to_dict()), 200
