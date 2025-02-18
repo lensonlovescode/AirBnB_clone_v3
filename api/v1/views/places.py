@@ -5,6 +5,7 @@ Handles all default RESTful API actions for Place objects.
 from flask import jsonify, abort, request
 from api.v1.views import app_views
 from models import storage
+from models.state import State
 from models.place import Place
 from models.city import City
 from models.user import User
@@ -86,3 +87,48 @@ def update_place(place_id):
 
     place.save()
     return jsonify(place.to_dict()), 200
+
+
+@app_views.route('/places_search', methods=['POST'], strict_slashes=False)
+def search_places():
+    """
+    Retrieves Place objects based on JSON filters (states, cities, amenities)
+    """
+    if not request.is_json:
+        return jsonify({"error": "Not a JSON"}), 400
+
+    data = request.get_json()
+
+    if not data or (
+            not data.get("states") and
+            not data.get("cities") and
+            not data.get("amenities")
+    ):
+        return jsonify(
+                [place.to_dict() for place in storage.all(Place).values()]
+        )
+
+    places = set()
+
+    state_ids = data.get("states", [])
+    for state_id in state_ids:
+        state = storage.get(State, state_id)
+        if state:
+            for city in state.cities:
+                places.update(city.places)
+
+    city_ids = data.get("cities", [])
+    for city_id in city_ids:
+        city = storage.get(City, city_id)
+        if city:
+            places.update(city.places)
+
+    amenity_ids = data.get("amenities", [])
+    if amenity_ids:
+        places = [place for place in places if all(
+            storage.get(Amenity, amenity_id) in place.amenities
+            for amenity_id in amenity_ids
+            )
+        ]
+
+    return jsonify([place.to_dict() for place in places])
