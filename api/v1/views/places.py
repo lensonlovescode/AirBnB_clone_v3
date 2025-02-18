@@ -94,10 +94,9 @@ def search_places():
     """
     Retrieves Place objects based on JSON filters (states, cities, amenities)
     """
-    if not request.is_json:
+    data = request.get_json(silent=True)
+    if data is None:
         return jsonify({"error": "Not a JSON"}), 400
-
-    data = request.get_json()
 
     if not data or (
             not data.get("states") and
