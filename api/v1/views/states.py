@@ -45,7 +45,9 @@ def create_state():
     """
     Creates a new State object
     """
-    data = request.get_json()
+    if request.content_type != 'application/json':
+        return jsonify({"error": "Not a JSON"}), 400
+    data = request.get_json(silent=True)
     if not data:
         return jsonify({"error": "Not a JSON"}), 400
     if "name" not in data:
