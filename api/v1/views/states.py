@@ -68,6 +68,9 @@ def update_state(state_id):
     if not state:
         abort(404)
 
+    if request.content_type != 'application/json':
+        return jsonify({"error": "Content-Type must be application/json"}), 400
+
     data = request.get_json()
     if not data:
         return jsonify({"error": "Not a JSON"}), 400
